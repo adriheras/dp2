@@ -1,7 +1,7 @@
 <%--
 - form.tag
 -
-- Copyright (C) 2012-2021 Rafael Corchuelo.
+- Copyright (c) 2012-2021 Rafael Corchuelo.
 -
 - In keeping with the traditional purpose of furthering education and research, it is
 - the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -33,7 +33,7 @@
 	<acme:form-hidden path="version"/>
 	<jsp:doBody/>
 	<acme:form-errors path="*"/>	
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">	
+	<input type="hidden" name="_csrf" value="${_csrf.token}">
 </form>
 
 <script type="text/javascript">

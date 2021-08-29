@@ -1,7 +1,7 @@
 /*
  * AbstractTest.java
  *
- * Copyright (C) 2012-2021 Rafael Corchuelo.
+ * Copyright (c) 2012-2021 Rafael Corchuelo.
  *
  * In keeping with the traditional purpose of furthering education and research, it is
  * the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -12,21 +12,19 @@
 
 package acme.framework.testing;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,409 +32,210 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import acme.framework.helpers.PerformanceFileHelper;
-import acme.framework.helpers.StringHelper;
 import lombok.Getter;
 import lombok.Setter;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
-@ExtendWith(PerformanceExtension.class)
 public abstract class AbstractTest {
 
 	// Properties -------------------------------------------------------------
 
 	@Getter
 	protected String	protocol;
-
+	
 	@Getter
 	protected String	host;
-
+	
 	@Getter
 	protected String	port;
-
+	
 	@Getter
 	protected String	contextPath;
-
+	
 	@Getter
 	protected String	contextHome;
-
+	
 	@Getter
 	protected String	contextQuery;
 
 	@Getter
 	protected String	baseUrl;
-
+	
 	@Getter
 	protected String	homeUrl;
-
-
-	protected void setBaseCamp(final String protocol, final String host, final String port, final String contextPath, final String contextHome, final String contextQuery) {
-		assert !StringHelper.isBlank(protocol);
-		assert !StringHelper.isBlank(host);
-		assert !StringHelper.isBlank(port);
-		assert !StringHelper.isBlank(contextPath) && contextPath.startsWith("/") && !contextPath.endsWith("/");
-		assert !StringHelper.isBlank(contextHome) && contextHome.startsWith("/") && !contextHome.endsWith("/");
-		assert !StringHelper.isBlank(contextQuery) && contextQuery.startsWith("?");
-
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.contextPath = contextPath;
-		this.contextQuery = contextQuery;
+	
+	public void setBaseCamp(
+		final String protocol, final String host, final String port, 
+		final String contextPath, final String contextHome, final String contextQuery) {
+		
+		assert protocol != null;
+		assert host != null;
+		assert port != null;
+		assert contextPath != null && contextPath.startsWith("/") && !contextPath.endsWith("/");
+		assert contextHome != null && contextHome.startsWith("/") && !contextHome.endsWith("/");
+		assert contextQuery != null && contextQuery.startsWith("?");
 
 		this.baseUrl = String.format("%s://%s:%s%s", protocol, host, port, contextPath);
-		this.homeUrl = String.format("%s%s%s", this.baseUrl, contextHome, contextQuery);
+		this.homeUrl = String.format("%s?%s%s", this.baseUrl, contextHome, contextQuery);
 	}
-
-
-	@Getter
-	@Setter
-	protected boolean				headless;
-
-	@Getter
-	@Setter
-	protected boolean				autoPausing;
-
-	@Getter
-	@Setter
-	protected int					defaultTimeout;
-
+	
+	@Getter @Setter
+	protected boolean autoPausing;
+	
 	// Internal state ---------------------------------------------------------
 
-	protected static int			MAX_URL_FETCH_ATTEMPTS	= 10;
-	protected FirefoxOptions		options;
-	protected WebDriver				driver;
-	protected JavascriptExecutor	executor;
-	protected Random				random;
+	protected FirefoxOptions	options;
+	protected WebDriver			driver;
+	protected Random			random;
 
 	// Constructor ------------------------------------------------------------
 
-
 	protected AbstractTest() {
 		super();
-		this.headless = false;
-		this.autoPausing = false;
-		this.defaultTimeout = 30;
 	}
 
 	// JUnit interface --------------------------------------------------------
 
 	@BeforeAll
-	protected void beforeAll() {
+	public void beforeAll() {
 		this.options = new FirefoxOptions();
-		this.options.setHeadless(this.headless);
+		this.options.setHeadless(false);
 		this.options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 		this.options.setAcceptInsecureCerts(true);
 
 		this.driver = new FirefoxDriver(this.options);
-		this.driver.manage().timeouts().implicitlyWait(this.defaultTimeout, TimeUnit.SECONDS);
-		this.driver.manage().window().maximize();
+		this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-		this.executor = (JavascriptExecutor) this.driver;
-
-		this.random = new Random();
+		this.random = new Random();		
 	}
 
 	@BeforeEach
-	protected void beforeEach() {
-		this.driver.manage().deleteAllCookies();
-		this.navigateHome();
+	public void beforeEach() {
 	}
 
 	@AfterEach
-	protected void afterEach() {
-		;
+	public void afterEach() {
 	}
 
 	@AfterAll
-	protected void afterAll() {
+	public void afterAll() {
 		if (this.driver != null)
 			this.driver.quit();
 	}
 
-	// Sleep methods ----------------------------------------------------------
+	// Business methods -------------------------------------------------------
 
-	protected void sleep(final int duration, final boolean exact) {
-		assert duration >= 0 && duration <= 3600;
-
-		long autoPause;
+	public void sleep(final int maxDuration) {
+		assert maxDuration >= 0 && maxDuration <= 3600;
+		long duration;
 
 		try {
-			if (exact) {
-				Thread.sleep(1000L * duration);
-			} else if (this.autoPausing) {
-				autoPause = 1000L * (1 + this.random.nextInt(duration));
-				Thread.sleep(autoPause);
+			if (this.autoPausing) {
+				duration = 1000L * this.random.nextInt(maxDuration);
+				Thread.sleep(duration);
 			}
 		} catch (final Throwable oops) {
 			throw new RuntimeException(oops);
 		}
 	}
 
-	protected void shortSleep() {
-		this.sleep(2, false);
+	public void shortSleep() {
+		this.sleep(2);
 	}
 
-	protected void longSleep() {
-		this.sleep(5, false);
+	public void longSleep() {
+		this.sleep(5);
 	}
 
-	// Path-related methods ---------------------------------------------------
-
-	protected String getCurrentUrl() {
-		String result;
-		int counter;
-		String currentUrl;
-
-		this.waitUntilComplete();
-		currentUrl = this.driver.getCurrentUrl();
-		result = this.extractSimplePath(currentUrl);
-		for (counter = 0; counter < AbstractTest.MAX_URL_FETCH_ATTEMPTS && result.equals("/master/referrer"); counter++) {
-			this.sleep(counter + 1, true);
-			currentUrl = this.driver.getCurrentUrl();
-			result = this.extractSimplePath(currentUrl);
-		}
-		assert !result.equals("/master/referrer") : "The '/master/referrer' redirector didn't work";
-
-		return result;
-	}
-
-	protected String getSimplePath() {
-		String result;
-		String currentUrl;
-
-		currentUrl = this.getCurrentUrl();
-		result = this.extractSimplePath(currentUrl);
-
-		return result;
-	}
-
-	protected void checkSimplePath(final String expectedPath) {
-		assert this.isSimplePath(expectedPath);
-
-		String currentUrl, currentPath;
-
-		if (!expectedPath.equals("#")) {
-			this.waitUntilComplete();
-			currentUrl = this.getCurrentUrl();
-			currentPath = this.extractSimplePath(currentUrl);
-			assert currentPath.equals(expectedPath) : String.format("The system doesn't navigate from '%s' to '%s'", currentPath, expectedPath);
-		}
-	}
-
-	// Location methods -------------------------------------------------------
-
-	protected WebElement locateOne(final By locator) {
-		assert locator != null;
-		assert this.exists(locator) : String.format("Cannot find '%s'", locator.toString());
+	public WebElement locate(final By by) {
+		assert by != null;
 
 		WebElement result;
 
-		result = this.driver.findElement(locator);
+		result = this.driver.findElement(by);
+		Assertions.assertNotNull(result, "Cannot locate element");
 
 		return result;
 	}
-
-	protected List<WebElement> locateMany(final By locator) {
-		assert locator != null;
-		assert this.exists(locator) : String.format("Cannot find '%s'", locator.toString());
-
-		List<WebElement> result;
-
-		result = this.driver.findElements(locator);
-
-		return result;
-	}
-
-	protected boolean exists(final By locator) {
-		assert locator != null;
-
+	
+	public boolean exists(final By by) {
 		boolean result;
-
+		
 		try {
-			this.driver.findElement(locator);
+			this.driver.findElement(by);
 			result = true;
 		} catch (final Throwable oops) {
 			result = false;
 		}
-
-		return result;
-	}
-
-	protected void checkExists(final By locator) {
-		assert locator != null;
-
-		assert this.exists(locator) : String.format("Element '%s' is expected", locator);
-	}
-
-	protected void checkNotExists(final By locator) {
-		assert locator != null;
-
-		assert !this.exists(locator) : String.format("Element '%s' is not expected", locator);
-	}
-
-	// Form-filling methods ---------------------------------------------------
-
-	protected void clear(final By locator) {
-		assert locator != null;
-
-		WebElement element;
-
-		element = this.locateOne(locator);
-		element.clear();
-		this.waitUntilComplete();
-		this.shortSleep();
-	}
-
-	protected void fill(final By locator, final String value) {
-		assert locator != null;
-		// value is nullable
-
-		WebElement element;
-
-		element = this.locateOne(locator);
-		element.clear();
-		if (!StringHelper.isBlank(value))
-			element.sendKeys(value);
-		this.waitUntilComplete();
-		this.shortSleep();
-	}
-
-	// Navigation methods -----------------------------------------------------
-
-	protected void navigateHome() {
-		this.navigate(() -> this.driver.get(this.homeUrl));
-	}
-
-	protected void navigate(final String path, final String query) {
-		assert this.isSimplePath(path);
-		assert this.isSimpleQuery(query);
-
-		String url;
 		
-		url = String.format("%s%s%s%s", this.baseUrl, path, this.contextQuery, query);		
-		this.navigate(() -> this.driver.get(url));		
+		return result;		
 	}
 
-	protected void navigate(final Runnable navigator) {
-		assert navigator != null;
-
-		By locator;
-		WebElement html;
-		long startTime, endTime, duration;
-		String simplePath;
-
-		locator = By.tagName("html");
-		html = this.driver.findElement(locator);
-		assert html != null;
-
-		startTime = System.currentTimeMillis();
-		navigator.run();
-		this.waitStalenessOf(html);
-		endTime = System.currentTimeMillis();
-		duration = endTime - startTime;
-		simplePath = this.getSimplePath();
-				 
-		PerformanceFileHelper.writeRequestRecord(simplePath, duration);
-
+	public void navigateHome() {
+		this.driver.get(this.homeUrl);
 		this.longSleep();
 	}
 
-	// Click methods ----------------------------------------------------------
+	public void navigate(final String path, final String query) {
+		assert path != null && path.startsWith("/");
+		// assert query is nullable
 
-	protected void clickAndGo(final By locator) {
+		String url;
+
+		url = String.format("%s/%s?%s&%s", this.baseUrl, path, query, this.contextQuery);
+		this.driver.get(url);
+		this.longSleep();
+	}
+
+	public void clear(final By locator) {
 		assert locator != null;
 
 		WebElement element;
 
-		element = this.locateOne(locator);
-		this.clickAndGo(element);
-	}
-
-	protected void clickAndGo(final WebElement element) {
-		assert element != null;
-
-		// INFO: WebElement::click is a nightmare.  Don't use it!
-		this.executor.executeScript("arguments[0].click();", element);		
-		this.waitUntilComplete();
+		element = this.locate(locator);
+		element.clear();
 		this.shortSleep();
 	}
 
-	protected void clickAndWait(final By locator) {
+	public void click(final By locator) {
 		assert locator != null;
 
 		WebElement element;
 
-		element = this.locateOne(locator);
-		this.clickAndWait(element);
+		element = this.locate(locator);
+		element.click();
+		this.shortSleep();
 	}
 
-	protected void clickAndWait(final WebElement element) {
-		assert element != null;
+	public void submit(final By locator) {
+		assert locator != null;
 
-		this.navigate(() -> this.executor.executeScript("arguments[0].click();", element));
-	}
-
-	// Ancillary methods ------------------------------------------------------
-
-	protected boolean isSimplePath(final String path) {
-		boolean result;
-
-		result = !StringHelper.isBlank(path) && //
-			(path.equals("#") || //
-				path.startsWith("/") && !path.endsWith("/") && !path.contains("?") //
-			);
-
-		return result;
-	}
-
-	protected boolean isSimpleQuery(final String query) {
-		boolean result;
-
-		result = query == null || (!query.startsWith("?") && !query.startsWith("&"));
-
-		return result;
-	}
-
-	protected String extractSimplePath(final String url) {
-		assert !StringHelper.isBlank(url);
-
-		String result;
-		int queryPosition;
-
-		result = url.replace(this.baseUrl, "");
-		queryPosition = result.indexOf("?");
-		if (queryPosition != -1)
-			result = result.substring(0, queryPosition);
-
-		return result;
-	}
-
-	protected void waitStalenessOf(final WebElement html) {
-		assert html != null;
-
-		By locator;
+		WebElement oldHtml, element;
+		By htmlLocator;
 		WebDriverWait wait;
 
-		try {
-			locator = By.tagName("html");
-			wait = new WebDriverWait(this.driver, this.defaultTimeout);
-			wait.until(WaitConditions.stalenessOf(html, locator));
-		} catch (final Throwable oops) {
-			assert false : "Timeout waiting for action to complete";
-		}
+		htmlLocator = By.tagName("html");
+		oldHtml = this.driver.findElement(htmlLocator);
+		element = this.locate(locator);
+		element.click();
+		this.longSleep();
+
+		wait = new WebDriverWait(this.driver, 30);
+		wait.until(WaitConditions.safeStalenessOf(oldHtml, htmlLocator));
 	}
 
-	protected void waitUntilComplete() {
-		WebDriverWait wait;
+	public void fill(final By locator, final String value) {
+		assert locator != null;
+		// assert value is nullable
 
-		try {
-			wait = new WebDriverWait(this.driver, this.defaultTimeout);
-			wait.until(WaitConditions.documentComplete());
-		} catch (final Throwable oops) {
-			assert false : "Timeout waiting for action to complete";
-		}
+		WebElement element;
+
+		element = this.locate(locator);
+		element.clear();
+		if (value != null && !value.isEmpty())
+			element.sendKeys(value);
+		this.shortSleep();
 	}
 
 }

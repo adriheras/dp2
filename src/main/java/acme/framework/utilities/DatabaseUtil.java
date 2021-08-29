@@ -1,7 +1,7 @@
 /*
  * DatabaseUtil.java
  *
- * Copyright (C) 2012-2021 Rafael Corchuelo.
+ * Copyright (c) 2012-2021 Rafael Corchuelo.
  *
  * In keeping with the traditional purpose of furthering education and research, it is
  * the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -20,7 +20,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
@@ -33,6 +35,7 @@ import javax.persistence.metamodel.Metamodel;
 import org.hibernate.Session;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.service.ServiceRegistry;
@@ -58,16 +61,16 @@ public class DatabaseUtil {
 	// Internal state ---------------------------------------------------------
 
 	@PersistenceContext
-	protected EntityManager					entityManager;
+	protected EntityManager			entityManager;
 
 	@Autowired
-	protected PlatformTransactionManager	transactionManager;
+	protected PlatformTransactionManager		transactionManager;
 
 	@Autowired
-	protected Environment					environment;
+	protected Environment			environment;
 
-	protected TransactionStatus				transactionStatus;
-	protected TransactionDefinition			transactionDefinition;
+	protected TransactionStatus		transactionStatus;
+	protected TransactionDefinition	transactionDefinition;
 
 	// Transaction management --------------------------------------------------
 
@@ -83,7 +86,7 @@ public class DatabaseUtil {
 	public void startTransaction() {
 		assert !this.isTransactionActive();
 
-		this.transactionDefinition = new DefaultTransactionDefinition();
+		this.transactionDefinition = new DefaultTransactionDefinition();		
 		this.transactionStatus = this.transactionManager.getTransaction(this.transactionDefinition);
 		this.setReadUncommittedIsolationLevel();
 		this.clearPersistenceContext();
@@ -127,9 +130,9 @@ public class DatabaseUtil {
 
 	public void recreateSchema() {
 		Metadata metadata;
-		String[] dropScript, createScript;		
-
-		metadata = this.buildMetadataSources();		
+		String[] dropScript, createScript;
+		
+		metadata = this.generateMetadata();
 		dropScript = this.generateScript(metadata, Action.DROP);
 		this.executeScript(dropScript);
 		createScript = this.generateScript(metadata, Action.CREATE);
@@ -226,30 +229,43 @@ public class DatabaseUtil {
 
 	// Internal methods -------------------------------------------------------
 
-	@SuppressWarnings("deprecation")
-	protected Metadata buildMetadataSources() {
+	protected Metadata generateMetadata() {
 		Metadata result;
-		Session session;
+		Map<String, String> settings;
+		StandardServiceRegistryBuilder registryBuilder;
 		ServiceRegistry registry;
-		MetadataSources sources;		
+		MetadataSources metadataBuilder;
 		Metamodel metamodel;
 		Collection<EntityType<?>> entities;
 		Collection<EmbeddableType<?>> embeddables;
-		
-		session = this.entityManager.unwrap(Session.class);
-		assert session != null;
-		registry = session.getSessionFactory().getSessionFactory().getServiceRegistry().getParentServiceRegistry();
-		sources = new MetadataSources(registry);
+
+		settings = new HashMap<String, String>();
+		settings.put("connection.driver_class", this.environment.getRequiredProperty("spring.datasource.driver-class-name"));
+		settings.put("dialect", this.environment.getRequiredProperty("spring.jpa.hibernate.dialect"));
+		settings.put("hibernate.connection.url", this.environment.getRequiredProperty("spring.datasource.url"));
+		settings.put("hibernate.connection.username", this.environment.getRequiredProperty("spring.datasource.username"));
+		settings.put("hibernate.connection.password", this.environment.getRequiredProperty("spring.datasource.password"));
+		settings.put("hibernate.physical_naming_strategy", this.environment.getRequiredProperty("spring.jpa.hibernate.naming.physical-strategy"));
+		settings.put("hibernate.implicit_naming_strategy", this.environment.getRequiredProperty("spring.jpa.hibernate.naming.implicit-strategy"));
+		settings.put("show_sql", this.environment.getRequiredProperty("spring.jpa.hibernate.show-sql"));
+		settings.put("format_sql", this.environment.getRequiredProperty("spring.jpa.hibernate.format-sql"));
+		settings.put("hibernate.globally_quoted_identifiers", "true");
+
+		registryBuilder = new StandardServiceRegistryBuilder();
+		registryBuilder.applySettings(settings);
+		registry = registryBuilder.build();
+
+		metadataBuilder = new MetadataSources(registry);
 		metamodel = this.entityManager.getMetamodel();
 		entities = metamodel.getEntities();
 		for (final EntityType<?> entity : entities) {
-			sources.addAnnotatedClass(entity.getJavaType());
+			metadataBuilder.addAnnotatedClass(entity.getJavaType());
 		}
 		embeddables = metamodel.getEmbeddables();
 		for (final EmbeddableType<?> embeddable : embeddables) {
-			sources.addAnnotatedClass(embeddable.getJavaType());
+			metadataBuilder.addAnnotatedClass(embeddable.getJavaType());
 		}
-		result = sources.buildMetadata();
+		result = metadataBuilder.buildMetadata();
 
 		return result;
 	}
@@ -297,5 +313,51 @@ public class DatabaseUtil {
 
 		return result;
 	}
+
+	// Scrap stuff ------------------------------------------------------------
+
+	//	public void executeScript(final File file) {
+	//		assert file != null && file.isFile() && file.canRead();
+	//
+	//		String[] commands;
+	//
+	//		commands = this.readScript(file);
+	//		this.executeScript(commands);
+	//	}
+
+	//	protected String[] readScript(final File file) {
+	//		assert file != null && file.isFile() && file.canRead();
+	//
+	//		String script;
+	//		String[] result;
+	//
+	//		try {
+	//			script = FileUtils.readFileToString(file, "utf-8");
+	//			script = script.replaceAll(";\\s*[\r\n]+", ">\\|\\|<");
+	//			script = script.replaceAll("[\r\n]+", " ");
+	//			result = script.split(">\\|\\|<");
+	//		} catch (Throwable oops) {
+	//			throw new RuntimeException(oops);
+	//		}
+	//
+	//		return result;
+	//	}
+
+	//	public void executeScript(final List<String> commands) {
+	//		assert !CollectionHelper.someNull(commands);
+	//
+	//		try {
+	//			this.startTransaction();
+	//			for (final String command : commands) {
+	//				this.executeCommand(command);
+	//			}
+	//			this.commitTransaction();
+	//		} catch (Throwable oops) {
+	//			if (this.isTransactionActive()) {
+	//				this.rollbackTransaction();
+	//			}
+	//			throw new RuntimeException(oops);
+	//		}
+	//	}
 
 }

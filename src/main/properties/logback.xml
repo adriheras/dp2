@@ -3,7 +3,7 @@
 <!--
 - logback.xml
 -
-- Copyright (C) 2012-2021 Rafael Corchuelo.
+- Copyright (c) 2012-2021 Rafael Corchuelo.
 -
 - In keeping with the traditional purpose of furthering education and research, it is
 - the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -17,7 +17,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd"
 >
-
  	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
     		<layout class="acme.framework.utilities.LogbackCustomLayout" />
@@ -25,7 +24,7 @@
     </appender>
     
     <appender name="File" class="ch.qos.logback.core.FileAppender">
-    	<file>starter-project.log</file>
+    	<file>acme-one.log</file>
     	<append>true</append>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
     		<layout class="acme.framework.utilities.LogbackCustomLayout" />
@@ -41,6 +40,5 @@
         <appender-ref ref="Console" />
         <appender-ref ref="File" />
     </root>
-
 </configuration>
 

@@ -1,7 +1,7 @@
 <%--
 - menu.jsp
 -
-- Copyright (C) 2012-2021 Rafael Corchuelo.
+- Copyright (c) 2012-2021 Rafael Corchuelo.
 -
 - In keeping with the traditional purpose of furthering education and research, it is
 - the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -19,7 +19,7 @@
 <acme:menu-bar code="master.menu.home">
 	<acme:menu-left>
 		<acme:menu-option code="master.menu.anonymous" access="isAnonymous()">
-			<acme:menu-suboption code="master.menu.anonymous.favourite-link" action="http://www.example.com/"/>
+		<acme:menu-suboption code="master.menu.anonymous.favourite-link-delasheras" action="https://www.youtube.com/watch?v=sOnqjkJTMaA"/>
 		</acme:menu-option>
 
 		<acme:menu-option code="master.menu.administrator" access="hasRole('Administrator')">
