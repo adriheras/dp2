@@ -1,7 +1,7 @@
 /*
  * AbstractController.java
  *
- * Copyright (c) 2012-2021 Rafael Corchuelo.
+ * Copyright (C) 2012-2021 Rafael Corchuelo.
  *
  * In keeping with the traditional purpose of furthering education and research, it is
  * the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -112,12 +112,12 @@ public abstract class AbstractController<R extends UserRole, E> {
 
 	// Command Management -----------------------------------------------------
 
-	public void addBasicCommand(final BasicCommand basicCommand, final AbstractService<R, E> service) {
+	public void addBasicCommand(final BasicCommand basicCommand, final AbstractService<R, E> listService) {
 		assert basicCommand != null;
 		assert !this.commandManager.isRegistered(basicCommand);
-		assert service != null;
+		assert listService != null;
 
-		this.commandManager.addBasicCommand(basicCommand, service);
+		this.commandManager.addBasicCommand(basicCommand, listService);
 	}
 
 	public void addCustomCommand(final CustomCommand customCommand, final BasicCommand baseCommand, final AbstractService<R, E> service) {
@@ -349,7 +349,7 @@ public abstract class AbstractController<R extends UserRole, E> {
 	}
 
 	@Transactional(TxType.MANDATORY)
-	public Response<E> doPost(final Request<E> request, final ServiceWrapper<R, E> service) {
+	public Response<E> doPost(final Request<E> request, final ServiceWrapper<R, E> service) throws Exception {
 		assert request != null;
 		assert service != null;
 

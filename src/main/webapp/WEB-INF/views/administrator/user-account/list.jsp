@@ -2,7 +2,7 @@
 <%--
 - list.jsp
 -
-- Copyright (c) 2012-2021 Rafael Corchuelo.
+- Copyright (C) 2012-2021 Rafael Corchuelo.
 -
 - In keeping with the traditional purpose of furthering education and research, it is
 - the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -21,5 +21,3 @@
 	<acme:list-column code="administrator.user-account.list.label.name" path="identity.name" width="40%"/>
 	<acme:list-column code="administrator.user-account.list.label.surname" path="identity.surname" width="40%"/>		
 </acme:list>
-
-

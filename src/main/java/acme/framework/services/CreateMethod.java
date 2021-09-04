@@ -1,7 +1,7 @@
 /*
  * CreateMethod.java
  *
- * Copyright (c) 2012-2021 Rafael Corchuelo.
+ * Copyright (C) 2012-2021 Rafael Corchuelo.
  *
  * In keeping with the traditional purpose of furthering education and research, it is
  * the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -21,6 +21,6 @@ import acme.framework.entities.UserRole;
 @Transactional(TxType.MANDATORY)
 public interface CreateMethod<R extends UserRole, E> {
 
-	void create(final Request<E> request, final E entity);
+	void create(final Request<E> request, final E entity) throws Exception;
 
 }

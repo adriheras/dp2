@@ -1,7 +1,7 @@
 /*
  * ServiceWrapper.java
  *
- * Copyright (c) 2012-2021 Rafael Corchuelo.
+ * Copyright (C) 2012-2021 Rafael Corchuelo.
  *
  * In keeping with the traditional purpose of furthering education and research, it is
  * the policy of the copyright owner to permit non-commercial use and redistribution of
@@ -154,7 +154,7 @@ public class ServiceWrapper<R extends UserRole, E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void create(final Request<E> request, final E entity) {
+	public void create(final Request<E> request, final E entity) throws Exception {
 		assert request != null;
 		assert entity != null;
 		assert ReflectionHelper.supports(this.service, CreateMethod.class);
