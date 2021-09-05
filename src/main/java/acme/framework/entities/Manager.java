@@ -30,9 +30,11 @@ public class Manager extends UserRole {
 	// Attributes -------------------------------------------------------------
 
 	@NotBlank
+	@Length(min = 1, max = 250)
 	protected String			company;
 
 	@NotBlank
+	@Length(min = 1, max = 250)
 	protected String			sector;
 
 	// Derived attributes -----------------------------------------------------
