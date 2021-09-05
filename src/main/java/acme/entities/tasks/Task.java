@@ -2,12 +2,9 @@
 package acme.entities.tasks;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +17,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-import acme.entities.workPlans.WorkPlan;
 import acme.framework.entities.DomainEntity;
 import acme.framework.entities.Manager;
 import lombok.Getter;
@@ -75,8 +71,6 @@ public class Task extends DomainEntity {
 	@NotNull
 	protected Boolean			isPrivate;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	protected List<WorkPlan>	workPlans;
 	// Object interface -------------------------------------------------------
 
 
@@ -105,7 +99,7 @@ public class Task extends DomainEntity {
 		workload = workload.trim();
 		if (workload.matches("^[0-9]*[1-9][0-9]*$")) {
 			this.setWorkloadHours(Integer.valueOf(workload));
-			this.setWorkloadMinutes(00);
+			this.setWorkloadMinutes(null);
 		} else if (workload.matches("^[0-9]*[1-9][0-9]*:[0-5][0-9]$|^[0-9]*:[1-5][0-9]$|^[0-9]*:0[1-9]$")) {
 			final String[] work = workload.split(":");
 			this.setWorkloadHours(Integer.valueOf(work[0]));

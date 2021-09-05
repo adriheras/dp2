@@ -58,8 +58,6 @@ public class ManagerTaskUpdateService implements AbstractUpdateService<Manager, 
 		assert request != null;
 		assert entity != null;
 		assert model != null;
-		
-		model.setAttribute("hasWorkplan", !this.repository.findWorkplansOfTask(entity.getId()).isEmpty());
 
 		request.unbind(entity, model, "title", "executionStart", "executionEnd", "workloadHours", "workloadMinutes", "workloadParsed", "description", "link", "isPrivate");
 	}
@@ -83,8 +81,8 @@ public class ManagerTaskUpdateService implements AbstractUpdateService<Manager, 
 		assert entity != null;
 		assert errors != null;
 
-		if(entity.getWorkloadParsed().matches("^\\d+(:\\d{2})?$")) {
-			if(entity.getWorkloadParsed().contains(":")) {
+		if (entity.getWorkloadParsed().matches("^\\d+(:\\d{2})?$")) {
+			if (entity.getWorkloadParsed().contains(":")) {
 				// workloadParsed of the form H:mm
 				final String[] hoursAndMinutes = entity.getWorkloadParsed().split(":");
 				final int hours = Integer.parseInt(hoursAndMinutes[0]);
@@ -94,17 +92,16 @@ public class ManagerTaskUpdateService implements AbstractUpdateService<Manager, 
 				errors.state(request, minutes < 60, "workloadParsed", "manager.task.form.error.workloadParsedMinutes");
 			} else {
 				// workloadParsed of the form H
-				if(Integer.parseInt(entity.getWorkloadParsed()) == 0) {
+				if (Integer.parseInt(entity.getWorkloadParsed()) == 0) {
 					errors.state(request, false, "workloadParsed", "manager.task.form.error.workloadParsedNonZero");
-				}
-				else {
+				} else {
 					errors.state(request, Integer.parseInt(entity.getWorkloadParsed()) < 100, "workloadParsed", "manager.task.form.error.workloadParsedHours");
 				}
 			}
 		} else {
 			errors.state(request, false, "workloadParsed", "manager.task.form.error.workloadParsedFormat");
 		}
-		
+
 		if (!errors.hasErrors("executionStart")) {
 			if (entity.getExecutionStart() != null && entity.getExecutionEnd() != null) {
 				// executionStart must be in the future

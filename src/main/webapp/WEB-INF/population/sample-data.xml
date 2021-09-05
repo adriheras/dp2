@@ -80,27 +80,57 @@
 		class="acme.framework.entities.Authenticated">
 		<property name="userAccount" ref="managerUserAccount2" />
 	</bean>
+	
+		<bean name="managerUserAccount3"
+		class="acme.framework.entities.UserAccount">
+		<property name="username" value="manager3" />
+		<property name="password" value="manager3" />
+		<property name="enabled" value="true" />
+		<property name="identity">
+			<bean class="acme.datatypes.UserIdentity">
+				<property name="name" value="manager3" />
+				<property name="surname" value="manager3" />
+				<property name="email" value="manager3@acme.com" />
+			</bean>
+		</property>
+		<property name="roles">
+			<list>
+				<ref bean="managerManager3" />
+				<ref bean="managerAuthenticated3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="managerManager3"
+		class="acme.framework.entities.Manager">
+		<property name="userAccount" ref="managerUserAccount3" />
+		<property name="company" value="US" />
+		<property name="sector" value="Teaching" />
+	</bean>
+
+	<bean name="managerAuthenticated3"
+		class="acme.framework.entities.Authenticated">
+		<property name="userAccount" ref="managerUserAccount3" />
+	</bean>
 
 	<!-- Shouts -->
 
 	<bean id="shout01" class="acme.entities.shouts.Shout">
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 01:01" />
 		<property name="author" value="John Doe" />
 		<property name="text" value="I'm happy!" />
-		<property name="info">
-			<null />
-		</property>
+		<property name="info" value="" />
 	</bean>
 
 	<bean id="shout02" class="acme.entities.shouts.Shout">
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 02:02" />
 		<property name="author" value="Jane Doe" />
 		<property name="text" value="I'm the master of my room!" />
 		<property name="info" value="http://www.example.org" />
 	</bean>
 
 	<bean id="shout03" class="acme.entities.shouts.Shout">
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 03:03" />
 		<property name="author" value="Foo Bar" />
 		<property name="text" value="Just turning 50!" />
 		<property name="info" value="http://happybirthday.com" />
@@ -109,55 +139,59 @@
 	<bean id="shout04" class="acme.entities.shouts.Shout">
 		<property name="author" value="The manager" />
 		<property name="text" value="Leslies should be erradicated" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 04:04" />
+		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout05" class="acme.entities.shouts.Shout">
 		<property name="author" value="A leslie hater" />
 		<property name="text" value="This app is not cool!!! :(" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 05:05" />
+		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout06" class="acme.entities.shouts.Shout">
 		<property name="author" value="Leslie Design-Testing" />
 		<property name="text" value="In fact, its quite cool!" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 06:06" />
 		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout07" class="acme.entities.shouts.Shout">
 		<property name="author" value="Leslie Secondary Account" />
 		<property name="text" value="Just kidding, it isnt." />
-		<property name="moment" value="2021/09/04 19:39" />
-
+		<property name="moment" value="2021/09/05 07:07" />
+		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout08" class="acme.entities.shouts.Shout">
 		<property name="author" value="The analist" />
 		<property name="text" value="Making analist things!" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 08:08" />
 		<property name="info" value="http://www.sample-app.com" />
 	</bean>
+
 	<bean id="shout09" class="acme.entities.shouts.Shout">
 		<property name="author" value="The tester" />
 		<property name="text"
 			value="The manager watches us, but who whatches the manager?" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 09:09" />
+		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout10" class="acme.entities.shouts.Shout">
 		<property name="author" value="LSI author" />
 		<property name="text" value="This is the 10 shout!" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 10:10" />
 		<property name="info" value="http://www.sample-app.com" />
 	</bean>
 
 	<bean id="shout11" class="acme.entities.shouts.Shout">
 		<property name="author" value="Sampler guy" />
 		<property name="text" value="Final sampling!" />
-		<property name="moment" value="2021/09/04 19:39" />
+		<property name="moment" value="2021/09/05 11:11" />
 		<property name="info" value="http://www.sample-app.com" />
-	</bean>
+	</bean> 
 
 	<!-- Tasks -->
 
@@ -183,7 +217,7 @@
 		<property name="description"
 			value="A public unfinished task which is the second one" />
 		<property name="link"
-			value="http://second.task/public/unfinished" />
+			value="" />
 		<property name="isPrivate" value="false" />
 		<property name="executionStart" value="2022/04/20 11:00" />
 		<property name="executionEnd" value="2022/12/02 20:00" />
@@ -213,7 +247,7 @@
 		<property name="description"
 			value="A public unfinished task which is the fourth one" />
 		<property name="link"
-			value="http://fourth.task/public/unfinished" />
+			value="" />
 		<property name="isPrivate" value="false" />
 		<property name="executionStart" value="2022/04/09 10:00" />
 		<property name="executionEnd" value="2022/12/23 18:00" />
@@ -243,7 +277,7 @@
 		<property name="description"
 			value="A public unfinished task which is the sixth one" />
 		<property name="link"
-			value="http://sixth.task/public/unfinished" />
+			value="" />
 		<property name="isPrivate" value="false" />
 		<property name="executionStart" value="2022/07/07 10:00" />
 		<property name="executionEnd" value="2022/10/10 18:00" />
@@ -260,8 +294,8 @@
 		<property name="link"
 			value="http://first.task/public/finished" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/02/01 14:00" />
-		<property name="executionEnd" value="2012/03/25 17:30" />
+		<property name="executionStart" value="2020/02/01 14:00" />
+		<property name="executionEnd" value="2020/03/25 17:30" />
 		<property name="workloadHours" value="1" />
 		<property name="workloadMinutes" value="30" />
 	</bean>
@@ -273,10 +307,10 @@
 		<property name="description"
 			value="A public finished task which is the second one" />
 		<property name="link"
-			value="http://second.task/public/finished" />
+			value="" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/04/20 11:00" />
-		<property name="executionEnd" value="2012/12/02 20:00" />
+		<property name="executionStart" value="2020/04/20 11:00" />
+		<property name="executionEnd" value="2020/12/02 20:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="15" />
 	</bean>
@@ -290,8 +324,8 @@
 		<property name="link"
 			value="http://third.task/public/finished" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/09/20 10:00" />
-		<property name="executionEnd" value="2012/11/02 12:00" />
+		<property name="executionStart" value="2020/09/20 10:00" />
+		<property name="executionEnd" value="2020/11/02 12:00" />
 		<property name="workloadHours" value="1" />
 		<property name="workloadMinutes" value="55" />
 	</bean>
@@ -303,10 +337,10 @@
 		<property name="description"
 			value="A public finished task which is the fourth one" />
 		<property name="link"
-			value="http://fourth.task/public/finished" />
+			value="" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/04/09 10:00" />
-		<property name="executionEnd" value="2012/12/23 18:00" />
+		<property name="executionStart" value="2020/04/09 10:00" />
+		<property name="executionEnd" value="2020/12/23 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
 	</bean>
@@ -320,8 +354,8 @@
 		<property name="link"
 			value="http://fifth.task/public/finished" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/06/06 10:00" />
-		<property name="executionEnd" value="2012/11/11 18:00" />
+		<property name="executionStart" value="2020/06/06 10:00" />
+		<property name="executionEnd" value="2020/11/11 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
 	</bean>
@@ -333,10 +367,10 @@
 		<property name="description"
 			value="A public finished task which is the sixth one" />
 		<property name="link"
-			value="http://sixth.task/public/finished" />
+			value="" />
 		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/07/07 10:00" />
-		<property name="executionEnd" value="2012/10/10 18:00" />
+		<property name="executionStart" value="2020/07/07 10:00" />
+		<property name="executionEnd" value="2020/10/10 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
 	</bean>
@@ -365,7 +399,7 @@
 		<property name="description"
 			value="A private unfinished task which is the second one" />
 		<property name="link"
-			value="http://second.task/private/unfinished" />
+			value="" />
 		<property name="isPrivate" value="true" />
 		<property name="executionStart" value="2022/04/20 11:00" />
 		<property name="executionEnd" value="2022/12/02 20:00" />
@@ -397,7 +431,7 @@
 		<property name="description"
 			value="A private unfinished task which is the fourth one" />
 		<property name="link"
-			value="http://fourth.task/private/unfinished" />
+			value="" />
 		<property name="isPrivate" value="true" />
 		<property name="executionStart" value="2022/04/09 10:00" />
 		<property name="executionEnd" value="2022/12/23 18:00" />
@@ -429,7 +463,7 @@
 		<property name="description"
 			value="A private unfinished task which is the sixth one" />
 		<property name="link"
-			value="http://sixth.task/private/unfinished" />
+			value="" />
 		<property name="isPrivate" value="true" />
 		<property name="executionStart" value="2022/07/07 10:00" />
 		<property name="executionEnd" value="2022/10/10 18:00" />
@@ -446,8 +480,8 @@
 		<property name="link"
 			value="http://first.task/private/finished" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/02/01 14:00" />
-		<property name="executionEnd" value="2012/03/25 17:30" />
+		<property name="executionStart" value="2020/02/01 14:00" />
+		<property name="executionEnd" value="2020/03/25 17:30" />
 		<property name="workloadHours" value="1" />
 		<property name="workloadMinutes" value="30" />
 	</bean>
@@ -459,10 +493,10 @@
 		<property name="description"
 			value="A private finished task which is the second one" />
 		<property name="link"
-			value="http://second.task/private/finished" />
+			value="" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/04/20 11:00" />
-		<property name="executionEnd" value="2012/12/02 20:00" />
+		<property name="executionStart" value="2020/04/20 11:00" />
+		<property name="executionEnd" value="2020/12/02 20:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="15" />
 	</bean>
@@ -476,8 +510,8 @@
 		<property name="link"
 			value="http://third.task/private/finished" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/09/20 10:00" />
-		<property name="executionEnd" value="2012/11/02 12:00" />
+		<property name="executionStart" value="2020/09/20 10:00" />
+		<property name="executionEnd" value="2020/11/02 12:00" />
 		<property name="workloadHours" value="1" />
 		<property name="workloadMinutes" value="55" />
 	</bean>
@@ -489,10 +523,10 @@
 		<property name="description"
 			value="A private finished task which is the fourth one" />
 		<property name="link"
-			value="http://fourth.task/private/finished" />
+			value="" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/04/09 10:00" />
-		<property name="executionEnd" value="2012/12/23 18:00" />
+		<property name="executionStart" value="2020/04/09 10:00" />
+		<property name="executionEnd" value="2020/12/23 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
 	</bean>
@@ -506,8 +540,8 @@
 		<property name="link"
 			value="http://fifth.task/private/finished" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/06/06 10:00" />
-		<property name="executionEnd" value="2012/11/11 18:00" />
+		<property name="executionStart" value="2020/06/06 10:00" />
+		<property name="executionEnd" value="2020/11/11 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
 	</bean>
@@ -519,402 +553,12 @@
 		<property name="description"
 			value="A private finished task which is the sixth one" />
 		<property name="link"
-			value="http://sixth.task/private/finished" />
+			value="" />
 		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/07/07 10:00" />
-		<property name="executionEnd" value="2012/10/10 18:00" />
+		<property name="executionStart" value="2020/07/07 10:00" />
+		<property name="executionEnd" value="2020/10/10 18:00" />
 		<property name="workloadHours" value="8" />
 		<property name="workloadMinutes" value="40" />
-	</bean>
-
-	<!-- Work plans -->
-
-	<bean id="workPlan01PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicUnfinished" />
-				<ref bean="task02PublicUnfinished" />
-			</list>
-		</property>
-		<property name="title" value="Work plan number one" />
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/12/30 17:30" />
-		<property name="workloadHours" value="9" />
-		<property name="workloadMinutes" value="45" />
-	</bean>
-
-	<bean id="workPlan02PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number two" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan03PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number three" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan04PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number four" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan05PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number five" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan06PublicUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number six" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan01PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicFinished" />
-				<ref bean="task02PublicFinished" />
-			</list>
-		</property>
-		<property name="title" value="Work plan number one" />
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/12/30 17:30" />
-		<property name="workloadHours" value="9" />
-		<property name="workloadMinutes" value="45" />
-	</bean>
-
-	<bean id="workPlan02PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number two" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan03PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number three" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PublicFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan04PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number four" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan05PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number five" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan06PublicFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number six" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PublicFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="false" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan01PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateUnfinished" />
-				<ref bean="task02PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="title" value="Work plan number one" />
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/12/30 17:30" />
-		<property name="workloadHours" value="9" />
-		<property name="workloadMinutes" value="45" />
-	</bean>
-
-	<bean id="workPlan02PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number two" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan03PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number three" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/30 10:00" />
-		<property name="executionEnd" value="2022/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan04PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number four" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan05PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number five" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan06PrivateUnfinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number six" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateUnfinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2022/01/01 10:00" />
-		<property name="executionEnd" value="2022/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan01PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateFinished" />
-				<ref bean="task02PrivateFinished" />
-			</list>
-		</property>
-		<property name="title" value="Work plan number one" />
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/12/30 17:30" />
-		<property name="workloadHours" value="9" />
-		<property name="workloadMinutes" value="45" />
-	</bean>
-
-	<bean id="workPlan02PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number two" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan03PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager1" />
-		<property name="title" value="Work plan number three" />
-		<property name="tasks">
-			<list>
-				<ref bean="task01PrivateFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/30 10:00" />
-		<property name="executionEnd" value="2012/04/01 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan04PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number four" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan05PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number five" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
-	</bean>
-
-	<bean id="workPlan06PrivateFinished"
-		class="acme.entities.workPlans.WorkPlan">
-		<property name="owner" ref="managerManager2" />
-		<property name="title" value="Work plan number six" />
-		<property name="tasks">
-			<list>
-				<ref bean="task04PrivateFinished" />
-			</list>
-		</property>
-		<property name="isPrivate" value="true" />
-		<property name="executionStart" value="2012/01/01 10:00" />
-		<property name="executionEnd" value="2012/12/30 18:00" />
-		<property name="workloadHours" value="1" />
-		<property name="workloadMinutes" value="30" />
 	</bean>
 
 </beans>

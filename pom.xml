@@ -18,7 +18,7 @@
 	<description>This is Acme Work-Plans for the Group September #4 of Design &amp; Testing. D02</description>
 
 	<artifactId>Acme-Work-Plans</artifactId>
-	<version>21.2</version>
+	<version>21.6</version>
 	<packaging>war</packaging>
 
 	<parent>

@@ -25,4 +25,3 @@
 	<acme:list-column code="anonymous.shout.list.label.info" path="info"
 		width="20%" />
 </acme:list>
-

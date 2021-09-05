@@ -27,8 +27,7 @@
 				action="/anonymous/shout/create" />
 			<acme:menu-suboption code="master.menu.anonymous.task.list"
 				action="/anonymous/task/list" />
-			<acme:menu-suboption code="master.menu.anonymous.work-plans.list"
-				action="/anonymous/work-plan/list" />
+
 		</acme:menu-option>
 
 		<!-- Authenticated options -->
@@ -36,8 +35,7 @@
 			access="isAuthenticated()">
 			<acme:menu-suboption code="master.menu.authenticated.task.list"
 				action="/authenticated/task/list" />
-			<acme:menu-suboption code="master.menu.authenticated.work-plan.list"
-				action="/authenticated/work-plan/list" />
+
 		</acme:menu-option>
 
 		<!-- Manager options -->
@@ -47,10 +45,7 @@
 				action="/manager/task/list" />
 			<acme:menu-suboption code="master.menu.manager.task.create"
 				action="/manager/task/create" />
-			<acme:menu-suboption code="master.menu.manager.work-plan.list"
-				action="/manager/work-plan/list" />
-			<acme:menu-suboption code="master.menu.manager.work-plan.create"
-				action="/manager/work-plan/create" />
+
 		</acme:menu-option>
 
 		<!-- Administrator options -->
