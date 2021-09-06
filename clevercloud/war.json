@@ -7,8 +7,8 @@
 		"container": "TOMCAT8",
 		"war": [
 			{
-				"file": "target/Acme-Work-Plans-21.6.war",
-				"context": "/Acme-Work-Plans",
+				"file": "./target/Acme-Work-Plans-21.6.war",
+				"context": "/",
 				"port": 443
 			}
 		]
