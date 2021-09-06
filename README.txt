@@ -11,4 +11,4 @@
 This is Acme Work-Plans, our D02 project in Design & Testing II. We are implementing several functionalities like Shouting and Task Management.
 
 The link to our GitHub repository is: https://github.com/adriheras/dp2
-The link to our last GitHub release is: https://github.com/adriheras/dp2/releases/tag/3.0
+The link to our last GitHub release is: https://github.com/adriheras/dp2/releases/tag/4.0
